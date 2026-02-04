@@ -10,5 +10,5 @@ void display(double* buffer, int N){
         DrawCircle(buffer[i], buffer[i + 1], L, W, radius, color);
     }
     Refresh();
-    usleep(30000);
+    usleep(3000);
 }

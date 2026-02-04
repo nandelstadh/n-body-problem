@@ -60,8 +60,8 @@ int main(int argc, char *argv[]) {
             }
 
             /*Update buffer values*/
-            double ax = Fx / buffer[2];
-            double ay = Fy / buffer[2];
+            double ax = Fx; // / buffer[2];
+            double ay = Fy; // / buffer[2];
             buffer[n + 3] += dt * ax;
             buffer[n + 4] += dt * ay;
             buffer[n] += dt * buffer[n + 3];
