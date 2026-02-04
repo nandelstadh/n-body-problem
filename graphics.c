@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*
  * File: graphics.c
  * ----------------
@@ -245,3 +246,5 @@ void FlushDisplay(void) {
 void CloseDisplay(void) {
   XCloseDisplay(global_display_ptr);
 }
+=======
+>>>>>>> simulation
