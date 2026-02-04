@@ -1,0 +1,9 @@
+#Executable
+./galsim
+
+#Output
+result.gal
+
+#Comparison executable
+./compare_gal_file/cf
+
