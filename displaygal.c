@@ -1,6 +1,6 @@
 #include "displaygal.h"
 
-const float radius = 0.02, color = 0;
+const float radius = 0.0025, color = 0;
 
 void display(double* buffer, int N){
     int L = 1, W = 1; // Skärmdimensioner
