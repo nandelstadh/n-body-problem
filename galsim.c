@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
     const int windowWidth = 800;
 
     if (graphics) {
-        InitializeGraphics(argv[5], windowWidth, windowWidth); 
+        InitializeGraphics(argv[5], windowWidth, windowWidth);
         SetCAxes(0, 1);
     }
 
@@ -54,8 +54,9 @@ int main(int argc, char *argv[]) {
                 if (m == n) break;
                 double xdiff = buffer[n] - buffer[m];
                 double ydiff = buffer[n + 1] - buffer[m + 1];
-                Fx += -G * buffer[m + 2] / pow((xdiff + e0), 3) * xdiff;
-                Fy += -G * buffer[m + 2] / pow((ydiff + e0), 3) * ydiff;
+                double diff = sqrt(xdiff * xdiff + ydiff * ydiff);
+                Fx += -G * (buffer[m + 2] / pow((diff + e0), 3)) * xdiff;
+                Fy += -G * (buffer[m + 2] / pow((diff + e0), 3)) * ydiff;
             }
 
             /*Update buffer values*/
@@ -68,19 +69,18 @@ int main(int argc, char *argv[]) {
 
             /* printf("\n"); */
         }
-        printf("Graphics should be called\n"); 
-        if (graphics) { 
-            printf("Graphics called\n"); 
-            display(buffer, 6 * N); 
-        } 
+        printf("Graphics should be called\n");
+        if (graphics) {
+            printf("Graphics called\n");
+            display(buffer, 6 * N);
+        }
     }
     FILE *output = fopen("result.gal", "wb");
     fwrite(buffer, sizeof(double), 6 * N, output);
     fclose(output);
-    
-    if(graphics){
+
+    if (graphics) {
         FlushDisplay();
         CloseDisplay();
     }
-
 }
