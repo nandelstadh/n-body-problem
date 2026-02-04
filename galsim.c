@@ -1,9 +1,9 @@
+/* #include "displaygal.h" */
+/* #include "graphics.h" */
 #include "math.h"
 #include "stdio.h"
 #include "stdlib.h"
 #include "string.h"
-#include "graphics.h"
-#include "displaygal.h"
 
 /* Accept arguments ./galsim N filename nsteps delta_t graphics */
 /* where the input arguments have the following meaning: */
@@ -22,10 +22,10 @@ int main(int argc, char *argv[]) {
 
     const int windowWidth = 800;
 
-    if(graphics){
-        InitializeGraphics(argv[5], windowWidth, windowWidth);
-        SetCAxes(0, 1);
-    }
+    /* if (graphics) { */
+    /*     InitializeGraphics(argv[5], windowWidth, windowWidth); */
+    /*     SetCAxes(0, 1); */
+    /* } */
 
     FILE *file;
     file = fopen(filename, "r");
@@ -38,16 +38,16 @@ int main(int argc, char *argv[]) {
     double e0 = 0.001;
     double G = 100 / (double)N;
 
-    for (int time = 0; time < nsteps; time++){
+    for (int time = 0; time < nsteps; time++) {
+        printf("Timestep: %d", time);
         for (int n = 0; n < 6 * N; n += 6) {
-            printf("%d %d", N, n);
-            /* printf("Element: %i", n); */
-            /* printf("xpos: %f", buffer[n]); */
-            /* printf("ypos: %f", buffer[n + 1]); */
-            /* printf("mass: %f", buffer[n + 2]); */
-            /* printf("xvel: %f", buffer[n + 3]); */
-            /* printf("yvel: %f", buffer[n + 5]); */
-            /* printf("brightness: %f", buffer[n + 6]); */
+            /* printf("Element: %i\n", n); */
+            printf("xpos: %f\n", buffer[n]);
+            printf("ypos: %f\n", buffer[n + 1]);
+            printf("mass: %f\n", buffer[n + 2]);
+            printf("xvel: %f\n", buffer[n + 3]);
+            printf("yvel: %f\n", buffer[n + 5]);
+            printf("brightness: %f\n", buffer[n + 6]);
             /* Compute Fx and Fy values*/
             double Fx = 0, Fy = 0;
             for (int m = 0; m < 6 * N; m += 6) {
@@ -65,18 +65,18 @@ int main(int argc, char *argv[]) {
             buffer[n + 4] += dt * ay;
             buffer[n] += dt * buffer[n + 3];
             buffer[n + 1] += dt * buffer[n + 4];
-            
+
             /* printf("\n"); */
         }
-        printf("Hej");
-            if(graphics){
-                printf(" på dig\n");
-                display(buffer, 6*N);
-            }
+        /* printf("Graphics should be called"); */
+        /* if (graphics) { */
+        /*     printf("Graphics called\n"); */
+        /*     display(buffer, 6 * N); */
+        /* } */
     }
     FILE *output = fopen("result.gal", "wb");
-        fwrite(buffer, sizeof(double), 6 * N, output);
-        fclose(output);
-        FlushDisplay();
-        CloseDisplay();
+    fwrite(buffer, sizeof(double), 6 * N, output);
+    fclose(output);
+    /* FlushDisplay(); */
+    /* CloseDisplay(); */
 }
