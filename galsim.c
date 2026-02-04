@@ -24,12 +24,19 @@ int main(int argc, char *argv[]) {
 
     /*Read in the initial state*/
     fread(buffer, sizeof(double), 6 * N, file);
+    fclose(file);
 
     double e0 = 0.001;
     double G = 100 / (double)N;
 
     for (int n = 0; n < 6 * N; n += 6) {
         /* printf("Element: %i", n); */
+        /* printf("xpos: %f", buffer[n]); */
+        /* printf("ypos: %f", buffer[n + 1]); */
+        /* printf("mass: %f", buffer[n + 2]); */
+        /* printf("xvel: %f", buffer[n + 3]); */
+        /* printf("yvel: %f", buffer[n + 5]); */
+        /* printf("brightness: %f", buffer[n + 6]); */
         /* Compute Fx and Fy values*/
         double Fx = 0, Fy = 0;
         for (int m = 0; m < 6 * N; m += 6) {
@@ -50,4 +57,7 @@ int main(int argc, char *argv[]) {
 
         /* printf("\n"); */
     }
+    FILE *output = fopen("result.gal", "wb");
+    fwrite(buffer, sizeof(double), 6 * N, output);
+    fclose(output);
 }
