@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
             /* Compute Fx and Fy values*/
             double Fx = 0, Fy = 0;
             for (int m = 0; m < 6 * N; m += 6) {
-                if (m == n) break;
+                if (m == n) continue;
                 double xdiff = buffer[n] - buffer[m];
                 double ydiff = buffer[n + 1] - buffer[m + 1];
                 double diff = sqrt(xdiff * xdiff + ydiff * ydiff);
