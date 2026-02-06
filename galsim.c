@@ -39,15 +39,8 @@ int main(int argc, char *argv[]) {
     double G = 100 / (double)N;
 
     for (int time = 0; time < nsteps; time++) {
-        printf("Timestep: %d \n", time);
+        // printf("Timestep: %d \n", time);
         for (int n = 0; n < 6 * N; n += 6) {
-            /* printf("Element: %i\n", n); */
-            /*printf("xpos: %f\n", buffer[n]);
-            printf("ypos: %f\n", buffer[n + 1]);
-            printf("mass: %f\n", buffer[n + 2]);
-            printf("xvel: %f\n", buffer[n + 3]);
-            printf("yvel: %f\n", buffer[n + 5]);
-            printf("brightness: %f\n", buffer[n + 6]);*/
             /* Compute Fx and Fy values*/
             double Fx = 0, Fy = 0;
             for (int m = 0; m < 6 * N; m += 6) {
@@ -60,18 +53,14 @@ int main(int argc, char *argv[]) {
             }
 
             /*Update buffer values*/
-            double ax = Fx; // / buffer[n+2];
-            double ay = Fy; // / buffer[n+2];
+            double ax = Fx;
+            double ay = Fy;
             buffer[n + 3] += dt * ax;
             buffer[n + 4] += dt * ay;
             buffer[n] += dt * buffer[n + 3];
             buffer[n + 1] += dt * buffer[n + 4];
-
-            /* printf("\n"); */
         }
-        printf("Graphics should be called\n");
         if (graphics) {
-            printf("Graphics called\n");
             display(buffer, 6 * N);
         }
     }
