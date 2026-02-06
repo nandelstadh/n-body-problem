@@ -9,10 +9,10 @@ galsim.o: galsim.c graphics.h displaygal.h
 	gcc $(CFLAGS) $(INCLUDES) -c galsim.c
 
 displaygal.o: displaygal.c graphics.h
-	gcc $(CFLAGS) $(INCLUDES) -c displaygal.c graphics.o
+	gcc $(CFLAGS) $(INCLUDES) -c displaygal.c
 
 graphics.o: graphics.c graphics.h
 	gcc $(CFLAGS) $(INCLUDES) -c graphics.c
 
 clean:
-	rm -f ./galsim *.o
+	rm -f ./galsim *.o *.gal
