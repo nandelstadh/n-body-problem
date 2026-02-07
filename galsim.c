@@ -41,22 +41,23 @@ int main(int argc, char *argv[]) {
     for (int time = 0; time < nsteps; time++) {
         // printf("Timestep: %d \n", time);
         for (int n = 0; n < 6 * N; n += 6) {
-            /* Compute Fx and Fy values*/
-            double Fx = 0, Fy = 0;
+            /* Compute ax and ay values*/
+            double ax = 0, ay = 0;
             for (int m = 0; m < 6 * N; m += 6) {
                 if (m == n) continue;
                 double xdiff = buffer[n] - buffer[m];
                 double ydiff = buffer[n + 1] - buffer[m + 1];
                 double diff = sqrt(xdiff * xdiff + ydiff * ydiff);
-                Fx += -G * (buffer[m + 2] / pow((diff + e0), 3)) * xdiff;
-                Fy += -G * (buffer[m + 2] / pow((diff + e0), 3)) * ydiff;
+                ax += -G * (buffer[m + 2] / pow((diff + e0), 3)) * xdiff;
+                ay += -G * (buffer[m + 2] / pow((diff + e0), 3)) * ydiff;
             }
 
-            /*Update buffer values*/
-            double ax = Fx;
-            double ay = Fy;
+            /*Update buffer velocities*/
             buffer[n + 3] += dt * ax;
             buffer[n + 4] += dt * ay;
+        }
+        /*Update buffer positions for next time step*/
+        for (int n = 0; n < 6 * N; n += 6) {
             buffer[n] += dt * buffer[n + 3];
             buffer[n + 1] += dt * buffer[n + 4];
         }
