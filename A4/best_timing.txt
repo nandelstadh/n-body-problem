@@ -1,0 +1,4 @@
+0.413131
+0.390458
+Intel(R) Core(TM) Ultra 9 275HX
+24
