@@ -35,35 +35,71 @@ int main(int argc, char *argv[]) {
     fread(buffer, sizeof(double), 6 * N, file);
     fclose(file);
 
+    double px[N], py[N], mass[N], vx[N], vy[N], brightness[N], ax[N], ay[N];
+    for (int i = 0; i < N; i++) {
+        px[i] = buffer[6 * i];
+        py[i] = buffer[6 * i + 1];
+        mass[i] = buffer[6 * i + 2];
+        vx[i] = buffer[6 * i + 3];
+        vy[i] = buffer[6 * i + 4];
+        brightness[i] = buffer[6 * i + 5];
+        ax[i] = ay[i] = 0; 
+    }
+
     double e0 = 0.001;
     double G = 100 / (double)N;
 
     for (int time = 0; time < nsteps; time++) {
-        // printf("Timestep: %d \n", time);
-        for (int n = 0; n < 6 * N; n += 6) {
-            /* Compute ax and ay values*/
-            double ax = 0, ay = 0;
-            for (int m = 0; m < 6 * N; m += 6) {
-                if (m == n) continue;
-                double xdiff = buffer[n] - buffer[m];
-                double ydiff = buffer[n + 1] - buffer[m + 1];
-                double diff = sqrt(xdiff * xdiff + ydiff * ydiff);
-                ax += -G * (buffer[m + 2] / pow((diff + e0), 3)) * xdiff;
-                ay += -G * (buffer[m + 2] / pow((diff + e0), 3)) * ydiff;
+        for (int n = 0; n < N; n++) {
+            double px_n = px[n];
+            double py_n = py[n];
+            double mass_n = mass[n];
+            double axn = 0, ayn = 0;
+            for (int m = n + 1; m < N; m++) {
+                double xdiff = px_n-px[m];
+                double ydiff = py_n-py[m];
+                double r = sqrt(xdiff * xdiff + ydiff * ydiff) + e0;
+                double r3 = r * r * r;
+                double force_x = -G * xdiff / r3;
+                double force_y = -G * ydiff / r3;
+                axn += mass[m] * force_x;
+                ayn += mass[m] * force_y;
+                ax[m] -= mass_n * force_x;
+                ay[m] -= mass_n * force_y;
             }
-
-            /*Update buffer velocities*/
-            buffer[n + 3] += dt * ax;
-            buffer[n + 4] += dt * ay;
+            ax[n] += axn;
+            ay[n] += ayn;
         }
-        /*Update buffer positions for next time step*/
-        for (int n = 0; n < 6 * N; n += 6) {
-            buffer[n] += dt * buffer[n + 3];
-            buffer[n + 1] += dt * buffer[n + 4];
+
+        for (int n = 0; n < N; n++) {
+            vx[n] += dt * ax[n];
+            vy[n] += dt * ay[n];
+            px[n] += dt * vx[n];
+            py[n] += dt * vy[n];
         }
         if (graphics) {
+            for (int i = 0; i < N; i++) {
+                buffer[6 * i] = px[i];
+                buffer[6 * i + 1] = py[i];
+                buffer[6 * i + 2] = mass[i];
+                buffer[6 * i + 3] = vx[i];
+                buffer[6 * i + 4] = vy[i];
+                buffer[6 * i + 5] = brightness[i];
+            }
             display(buffer, 6 * N);
         }
+        for (int n = 0; n < N; n++) {
+            ax[n] = 0;
+            ay[n] = 0;
+        }
+    }
+    for (int i = 0; i < N; i++) {
+        buffer[6 * i] = px[i];
+        buffer[6 * i + 1] = py[i];
+        buffer[6 * i + 2] = mass[i];
+        buffer[6 * i + 3] = vx[i];
+        buffer[6 * i + 4] = vy[i];
+        buffer[6 * i + 5] = brightness[i];
     }
     FILE *output = fopen("result.gal", "wb");
     fwrite(buffer, sizeof(double), 6 * N, output);
