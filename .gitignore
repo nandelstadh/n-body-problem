@@ -1,0 +1,3 @@
+galsim
+*.o
+result.gal
