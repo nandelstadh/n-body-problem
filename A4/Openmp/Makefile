@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -O2 -fopenmp
+CFLAGS=-Wall -O3 -fopenmp -fopt-info-vec
 LDFLAGS=-lm -fopenmp
 
 all: galsim
